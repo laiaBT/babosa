@@ -19,15 +19,15 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         `, babosa, 0, -50)
     music.pewPew.play()
 })
-sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Projectile, function (sprite, otherSprite) {
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     amazon.destroy()
-    amazon.destroy(effects.disintegrate, 1000)
+    otherSprite.destroy()
     info.changeScoreBy(1)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
-    otherSprite.destroy(effects.fire, 500)
-    scene.cameraShake(4, 500)
     info.changeLifeBy(-1)
+    otherSprite.destroy(effects.fire, 1000)
+    scene.cameraShake(4, 500)
 })
 let amazon: Sprite = null
 let projectile: Sprite = null
@@ -55,6 +55,7 @@ babosa = sprites.create(img`
 babosa.setPosition(74, 110)
 controller.moveSprite(babosa, 100, 0)
 babosa.setStayInScreen(true)
+info.setLife(5)
 game.onUpdateInterval(500, function () {
     amazon = sprites.createProjectileFromSide(img`
         . . . . . . . . . . . . . . . . 
